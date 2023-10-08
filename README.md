@@ -1,37 +1,47 @@
-WhatsGoingOn
+# WhatsGoingOn
+
 WhatsGoingOn is a React Native app that helps users find current events happening in their area.
 
-Installation
+## Installation
+
 To install the app, follow these steps:
 
-Clone the repository:
+1. Clone the repository:
+git clone [repository-url]
 
-Install the dependencies:
+markdown
+Copy code
 
-Start the app:
+2. Install the dependencies:
+npm install
 
+markdown
+Copy code
+
+3. Start the app:
+npm start
+
+vbnet
+Copy code
 This will start the Metro bundler and open the Expo Developer Tools in your web browser.
 
-Run the app on your device or emulator:
+4. Run the app on your device or emulator:
+- To run the app on an iOS simulator, click on the "Run on iOS simulator" button in the Expo Developer Tools.
+- To run the app on an Android emulator, start the emulator and click on the "Run on Android device/emulator" button in the Expo Developer Tools.
 
-To run the app on an iOS simulator, click on the "Run on iOS simulator" button in the Expo Developer Tools.
-To run the app on an Android emulator, start the emulator and click on the "Run on Android device/emulator" button in the Expo Developer Tools.
-Usage
+## Usage
+
 To use the app, follow these steps:
 
-Open the app on your device or emulator.
+1. Open the app on your device or emulator.
+2. Allow the app to access your location.
+3. You should see a list of events happening in your area.
+4. Click on an event to view more details about the event.
 
-Allow the app to access your location.
+## Contributing
 
-You should see a list of events happening in your area.
-
-Click on an event to view more details about the event.
-
-Click on the "View on Twitter" button to view the tweet about the event on Twitter.
-
-Contributing
 If you would like to contribute to this project, feel free to submit a pull request or open an issue.
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## License
 
+This project is licensed under the MIT License. See the LICENSE file for details.
