@@ -12,9 +12,6 @@ git clone https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd
 2. Install the dependencies:
 npm install
 
-markdown
-Copy code
-
 3. Start the app:
 npx expo start
 
