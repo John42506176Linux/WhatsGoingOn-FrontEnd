@@ -7,10 +7,7 @@ WhatsGoingOn is a React Native app that helps users find current events happenin
 To install the app, follow these steps:
 
 1. Clone the repository:
-git clone [repository-url]
-
-markdown
-Copy code
+git clone https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd
 
 2. Install the dependencies:
 npm install
@@ -19,10 +16,8 @@ markdown
 Copy code
 
 3. Start the app:
-npm start
+npx expo start
 
-vbnet
-Copy code
 This will start the Metro bundler and open the Expo Developer Tools in your web browser.
 
 4. Run the app on your device or emulator:
