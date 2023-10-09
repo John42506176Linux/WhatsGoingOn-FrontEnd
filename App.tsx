@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import EventComponent from './components/eventComponent';
+import EventComponentList from './components/eventListComponent';
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <EventComponent />
+      <EventComponentList />
     </Provider>
   );
 };

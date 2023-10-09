@@ -1,5 +1,6 @@
 import * as ActionTypes from './actionTypes';
-import { Tweet } from '../models/tweet';
+import { Event } from '../models/event';
+import { getCurrentDate } from '../utilities/utilities';
 interface FetchEventRequestAction {
   type: typeof ActionTypes.FETCH_EVENT_REQUEST;
 }
@@ -38,21 +39,23 @@ export const fetchEvent = () => {
         const timeoutId = setTimeout(() => {
             controller.abort()
         }, 18000000)
-        const response = await fetch('http://10.0.2.2:8002/generate-event', {
+        const response = await fetch('http://10.0.2.2:8002/get_event', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
         signal: controller.signal,
         body: JSON.stringify({
-        location: 'San Francisco'
+        location: 'San Francisco',
+        date: getCurrentDate(),
         })
         });
         clearTimeout(timeoutId);
         const data = await response.json();
+        console.log(data['response']);
         let jsonArray = JSON.parse(data['response']);
         // Assuming that your Tweet class is defined and takes an object in its constructor
-        const tweets = jsonArray.map(jsonTweet => Tweet.fromJSON(jsonTweet));
+        const tweets = jsonArray.map(jsonTweet => Event.fromJSON(jsonTweet));
         dispatch(fetchEventSuccess(tweets));
       } catch (error) {
         console.log(`Error:${error.toString()}`);
