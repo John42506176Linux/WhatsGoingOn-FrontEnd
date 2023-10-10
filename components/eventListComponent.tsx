@@ -1,11 +1,19 @@
 import React, { useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../hooks';
 import { FlatList, View, Text, Button, ActivityIndicator,StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchEvent } from '../actions/eventActions';
 import EventComponent from '../components/eventComponent';
+import { Event } from '../models/event';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Event_Details: { event: Event };
+  // add other screens here
+};
+type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Event_Details'>;
 
 interface Props {
+  navigation: EventDetailsScreenNavigationProp;
   loading: boolean;
   data: any;
   error: string | null;
@@ -13,15 +21,17 @@ interface Props {
 }
 
 
-const EventComponentList: React.FC<Props> = ({ loading, data, error, fetchEvent }) => {
+const EventComponentList: React.FC<Props> = ({ navigation, loading, data, error, fetchEvent }) => {
   useEffect(() => {
     fetchEvent();
   }, [fetchEvent]);
-
-  const loadingSelector = useAppSelector(state => state.events);
+  
+  const handleEventPress = (event: Event) => {
+    navigation.navigate('Event_Details', {
+       event });
+  };
 
   if (loading) {
-    console.log("Loading");
     return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#0000ff" />
@@ -29,7 +39,6 @@ const EventComponentList: React.FC<Props> = ({ loading, data, error, fetchEvent 
     );
   }
   if (error) {
-    console.log("Error");
     return (
     <View style={styles.container}>
         <Button title="Fetch Tweets" onPress={fetchEvent} />
@@ -42,10 +51,16 @@ const EventComponentList: React.FC<Props> = ({ loading, data, error, fetchEvent 
       <Button title="Fetch Tweets" onPress={fetchEvent} />
       <Text style={styles.header}>Tweets</Text>
       <FlatList 
-        data={data}
-        renderItem={({ item }) => <EventComponent event={item} />}
-        keyExtractor={(item, index) => index.toString()} 
-      />
+      data={data}
+      renderItem={({ item }) => {
+        if (item.is_in_state) {
+          return <EventComponent event={item} onPress={() => handleEventPress(item)} />;
+        } else {
+          return null;
+        }
+      }}
+      keyExtractor={(item, index) => index.toString()} 
+    />
     </View>
   );
 };

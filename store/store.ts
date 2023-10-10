@@ -5,6 +5,7 @@ const store = configureStore({
   reducer: {
     events: eventReducer,
   },
+  
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,6 +1,7 @@
 import * as ActionTypes from './actionTypes';
-import { Event } from '../models/event';
 import { getCurrentDate } from '../utilities/utilities';
+import { BACKEND_URL } from 'react-native-dotenv';
+
 interface FetchEventRequestAction {
   type: typeof ActionTypes.FETCH_EVENT_REQUEST;
 }
@@ -39,26 +40,23 @@ export const fetchEvent = () => {
         const timeoutId = setTimeout(() => {
             controller.abort()
         }, 18000000)
-        const response = await fetch('http://10.0.2.2:8002/get_event', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-        location: 'San Francisco',
-        date: getCurrentDate(),
-        })
+        const response = await fetch(BACKEND_URL, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            signal: controller.signal,
+            body: JSON.stringify({
+            location: 'San Francisco, CA', // TODO: Make this dynamic
+            date: getCurrentDate(),
+          })
         });
         clearTimeout(timeoutId);
         const data = await response.json();
-        console.log(data['response']);
         let jsonArray = JSON.parse(data['response']);
-        // Assuming that your Tweet class is defined and takes an object in its constructor
-        const tweets = jsonArray.map(jsonTweet => Event.fromJSON(jsonTweet));
-        dispatch(fetchEventSuccess(tweets));
+        dispatch(fetchEventSuccess(jsonArray));
       } catch (error) {
-        console.log(`Error:${error.toString()}`);
+        console.log(`Error:${error.toString()}`); // TODO: Replace with proper logging
         dispatch(fetchEventFailure(error.toString()));
       }
     };
