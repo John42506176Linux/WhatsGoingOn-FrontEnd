@@ -11,9 +11,8 @@ const App: React.FC = () => {
     <NavigationContainer>
       <Provider store={store}>
       <Stack.Navigator initialRouteName="Home">
-        
           <Stack.Screen name="Home" component={EventComponentList} />
-          <Stack.Screen name="Event_Details">
+          <Stack.Screen name="Event Details">
             {(props) => <EventView {...props}/>}
           </Stack.Screen>
       </Stack.Navigator>

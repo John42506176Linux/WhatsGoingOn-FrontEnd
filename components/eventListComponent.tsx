@@ -7,10 +7,10 @@ import { Event } from '../models/event';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type RootStackParamList = {
-  Event_Details: { event: Event };
+  "Event Details": { event: Event };
   // add other screens here
 };
-type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Event_Details'>;
+type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Event Details'>;
 
 interface Props {
   navigation: EventDetailsScreenNavigationProp;
@@ -20,14 +20,13 @@ interface Props {
   fetchEvent: () => void;
 }
 
-
 const EventComponentList: React.FC<Props> = ({ navigation, loading, data, error, fetchEvent }) => {
   useEffect(() => {
     fetchEvent();
   }, [fetchEvent]);
-  
+
   const handleEventPress = (event: Event) => {
-    navigation.navigate('Event_Details', {
+    navigation.navigate('Event Details', {
        event });
   };
 
@@ -41,16 +40,19 @@ const EventComponentList: React.FC<Props> = ({ navigation, loading, data, error,
   if (error) {
     return (
     <View style={styles.container}>
-        <Button title="Fetch Tweets" onPress={fetchEvent} />
+        <Button title="Fetch New Tweets" onPress={fetchEvent} />
         <Text>Error: {error}</Text>
     </View>
     );
   }
   return (
     <View style={styles.top_container}>
-      <Button title="Fetch Tweets" onPress={fetchEvent} />
+      <Text style={{...styles.header, textAlign: 'center'}}>Tech Events happening in San Francisco</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Reload Tweets" onPress={fetchEvent} />
+      </View>
       <Text style={styles.header}>Tweets</Text>
-      <FlatList 
+      <FlatList
       data={data}
       renderItem={({ item }) => {
         if (item.is_in_state) {
@@ -59,7 +61,7 @@ const EventComponentList: React.FC<Props> = ({ navigation, loading, data, error,
           return null;
         }
       }}
-      keyExtractor={(item, index) => index.toString()} 
+      keyExtractor={(item, index) => index.toString()}
     />
     </View>
   );
@@ -80,6 +82,11 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       marginBottom: 10,
     },
+    buttonContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
   });
 
 const mapStateToProps = (state: any) => {
@@ -88,7 +95,7 @@ const mapStateToProps = (state: any) => {
     loading: state.events.loading,
     error: state.events.error,
   });
-} 
+}
 
 const mapDispatchToProps = {
   fetchEvent,
