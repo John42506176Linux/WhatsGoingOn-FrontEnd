@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import eventReducer from '../reducers/eventReducer';
+import locationReducer from '../reducers/locationReducer';
+import categoriesReducer from '../reducers/categoriesReducer';
 
 const store = configureStore({
   reducer: {
     events: eventReducer,
+    location: locationReducer,
+    categories: categoriesReducer,
   },
-  
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

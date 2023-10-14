@@ -16,7 +16,21 @@ interface FetchEventFailureAction {
   payload: string;
 }
 
-export type EventActionTypes = FetchEventRequestAction | FetchEventSuccessAction | FetchEventFailureAction;
+interface FetchEventTimeout {
+  type: typeof ActionTypes.FETCH_EVENT_TIMEOUT,
+}
+
+interface FetchEventConnectionError {
+  type: typeof ActionTypes.FETCH_EVENT_CONNECTION_ERROR,
+}
+
+interface FetchEventServerError {
+  type: typeof ActionTypes.FETCH_EVENT_SERVER_ERROR,
+  payload: string,
+}
+
+
+export type EventActionTypes = FetchEventRequestAction | FetchEventSuccessAction | FetchEventFailureAction | FetchEventTimeout | FetchEventConnectionError | FetchEventServerError;
 
 export const fetchEventRequest = (): FetchEventRequestAction => ({
   type: ActionTypes.FETCH_EVENT_REQUEST,
@@ -32,6 +46,20 @@ export const fetchEventFailure = (error: string): FetchEventFailureAction => ({
   payload: error,
 });
 
+export const fetchEventTimeout = (): FetchEventTimeout => ({
+  type: ActionTypes.FETCH_EVENT_TIMEOUT
+});
+
+export const fetchEventConnectionError = (): FetchEventConnectionError => ({
+  type: ActionTypes.FETCH_EVENT_CONNECTION_ERROR
+});
+
+export const fetchEventServerError = (error): FetchEventServerError => ({
+  type: ActionTypes.FETCH_EVENT_SERVER_ERROR,
+  payload: error,
+});
+
+
 export const fetchEvent = () => {
     return async (dispatch: any) => {
       dispatch(fetchEventRequest());
@@ -39,7 +67,7 @@ export const fetchEvent = () => {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => {
             controller.abort()
-        }, 18000000)
+        }, 100000)
         const response = await fetch(BACKEND_URL, {
             method: 'POST',
             headers: {
@@ -53,11 +81,22 @@ export const fetchEvent = () => {
         });
         clearTimeout(timeoutId);
         const data = await response.json();
+        if(response.status !== 200) throw new Error(`Server Error:${data['detail']}`);
         let jsonArray = JSON.parse(data['response']);
         dispatch(fetchEventSuccess(jsonArray));
       } catch (error) {
-        console.log(`Error:${error.toString()}`); // TODO: Replace with proper logging
-        dispatch(fetchEventFailure(error.toString()));
+        console.log(error);
+        if (error.name === 'TypeError') {
+          dispatch(fetchEventConnectionError());
+        }
+        else if (error.name === 'AbortError') {
+          dispatch(fetchEventTimeout());
+        }
+        else if (error.toString().includes('Server Error')) {
+          dispatch(fetchEventServerError(error.toString().replace('Error: Server Error:', '')));
+        }
+        else
+        dispatch(fetchEventFailure(error.toString())); // TODO: Replace with proper logging
       }
     };
 };

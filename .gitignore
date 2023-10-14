@@ -38,3 +38,7 @@ yarn-error.*
 
 # Ignore .txt files
 *.txt
+
+# Ignore -lock.json files
+*-lock.json
+

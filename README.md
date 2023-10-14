@@ -2,6 +2,9 @@
 
 WhatsGoingOn is a React Native app that helps users find current events happening in their area.
 
+![Demo GIF](./docs/Demo-Draft-1.gif)
+
+
 ## Installation
 
 To install the app, follow these steps:
